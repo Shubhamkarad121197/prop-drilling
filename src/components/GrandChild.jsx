@@ -1,15 +1,20 @@
-import React from 'react'
-import { getState } from '../globalStore'
+import { useState, useEffect } from "react";
+import { getState, subscribe } from "../globalStore";
 
-const GrandChild = () => {
+export default function GrandChild() {
+  const [user, setUserLocal] = useState(getState().user);
 
-  const {user}=getState()
+  useEffect(() => {
+    // 🔥 Subscribe to store updates
+    subscribe(() => {
+      setUserLocal(getState().user);
+    });
+  }, []);
+
   return (
     <div style={{border:"1px solid blue", padding:"10px"}}>
       <h5>GrandChild Component</h5>
       <p>Hey, {user} 👋</p>
     </div>
-  )
+  );
 }
-
-export default GrandChild
